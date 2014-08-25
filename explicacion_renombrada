@@ -1,0 +1,32 @@
+PARA IGNORAR ARCHIVOS CON EL .GITIGNORE
+ 
+Para poder ignorar archivos que no nos sirven subir al repositorio, podemos empezar creando un archivo que se llame “.gitignore”, al editarlo pondremos todas las expresiones que queremos para que GIT ignore los archivos.
+
+Hay algunos patrones que GIT interpreta:
+
+1. Las lineas en blanco solo nos sirven para darle formato a nuestro texto.
+2. El prefijo “!” sirve para negar un patrón.
+3. Si el patrón termina en “/” solo se aplicará a carpetas es decir un patrón “web/” ignorará la carpeta web/ pero no ignorará un fichero que se llame web.
+4. Si el patrón no termina en “/”, git lo interpreta como un “shell glob pattern”. Internamente git llama a la funcion fnmatch con el flag FNM_PATHNAME: esto significa que ni el * ni el ? Incluyen el caracter “/”.
+5. Una “/” al principio del patrón indica el inicio de una ruta relativa a la carpeta en la que se encuentre el fichero .gitignore. Una linea de tipo /config.php ignorará el fichero config.php pero no ignorará web/config.php
+
+Ahora hablaremos un poco mas acerca del punto 4 para que no quede mas claro de como funciona:
+
+Los ficheros .gitignore, .git/info/exclude y .gitignore_local permiten incluir patrones de tipo shell. Las reglas que se siguen en estos casos.
+
+	a)En una expresión que contenga el simbolo “?”, éste se corresponde con un y solo un caracter.
+	Ejemplo: bg-??.jpg
+		Ignorará los ficheros bg-01-jpg y bg-lt.jpg
+	    	No ignorará los ficheros bg-1.jpg y bg-001.jpg
+
+	b)En una expresion que contenga el simbolo “*”, éste se corresponde con cualquier numero de 	caracteres.
+	Ejemplo: bg-*.jpg
+		Ignorará todos los archivos que empiecen con “bg-” y temrinen con “jpg”
+
+	c)Una expresión que contenga caracteres “[]”, éstos se corresponden con uno y solo un caracter 	de los que estan incluidos en los corchetes. 
+	Ejemplo:*.[ao]
+		Ignora los ficheros *.o y *.a
+
+	d)Si se necesita utilizar los caracteres “? * []” en un patróon, estos deberán escaparse con \
+	Ejemplo: cache/cache-\[???\].cache
+		Este patrón ignorará los ficheros: cache/cache-[hG7].cache 
